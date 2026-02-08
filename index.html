@@ -898,6 +898,73 @@
             font-weight: 300;
         }
 
+        /* Dresscode-Galerie-Modal */
+        .dresscode-gallery-modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            width: 1200px;
+            text-align: center;
+            overflow-y: auto;
+        }
+
+        .dresscode-gallery-title {
+            font-family: 'Playfair Display', serif;
+            color: #FFF6E6;
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .dresscode-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .dresscode-gallery-item {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.4s ease;
+            background: #000;
+        }
+
+        .dresscode-gallery-item:hover {
+            border-color: rgba(212, 175, 55, 0.5);
+            transform: translateY(-5px);
+        }
+
+        .dresscode-gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .dresscode-gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .dresscode-gallery-modal-content {
+                max-width: 95%;
+                padding: 20px 15px;
+            }
+
+            .dresscode-gallery-title {
+                font-size: 1.4rem;
+                margin-bottom: 30px;
+            }
+
+            .dresscode-gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
         /* Footer */
         .footer {
             text-align: center;
@@ -1418,7 +1485,7 @@
         <div class="details">
             <h3 data-i18n="details.title">Feier Details</h3>
             <div class="details-grid">
-                <div class="detail-card">
+                <div class="detail-card" onclick="window.open('https://maps.app.goo.gl/HahFM9QzmgNmXnSo6', '_blank')" style="cursor: pointer;">
                     <div class="icon">○</div>
                     <h4 data-i18n="details.where">Wo</h4>
                     <p id="location">Althardstrasse 170<br>8105 Regensdorf</p>
@@ -1432,9 +1499,9 @@
                 <div class="detail-card">
                     <div class="icon">○</div>
                     <h4 data-i18n="details.what">Was</h4>
-                    <p data-i18n="details.food">Für Essen und Trinken ist gesorgt.<br><br>Es soll ein geselliges Zusammensein unter Freunden sein.</p>
+                    <p data-i18n="details.food">Für Essen und Trinken ist gesorgt.<br><br>Es soll ein geselliges Zusammensein unter Freunden sein.<br><br>Die Einladung gilt ohne Kinder. Erst ab 18 Jahren.</p>
                 </div>
-                <div class="detail-card">
+                <div class="detail-card" onclick="showDresscodeGallery()" style="cursor: pointer;">
                     <div class="icon">○</div>
                     <h4 data-i18n="details.dresscode">Dresscode</h4>
                     <p style="margin-top: 15px; font-size: 0.85rem; line-height: 1.8;" data-i18n="details.dresscodeText">Kein Kostüm, keine Verkleidung.<br><br>Ein echter Stil, der aber nicht deiner ist.<br>So würdest du dich nie anziehen.<br>Elegant und festlich.<br>Bewusst außerhalb deiner Komfortzone.</p>
@@ -1536,6 +1603,30 @@
             </div>
         </div>
 
+        <!-- Dresscode-Galerie-Modal -->
+        <div id="dresscodeGalleryModal" class="password-modal" style="display: none;">
+            <div class="password-modal-content dresscode-gallery-modal-content">
+                <h4 class="dresscode-gallery-title" data-i18n="modal.gallery.title">Dresscode Beispiele</h4>
+                <div class="dresscode-gallery-grid">
+                    <div class="dresscode-gallery-item">
+                        <img src="asset/887e5236-5ba5-4609-abea-d07e576e46ba.png" alt="Dresscode Beispiel 1">
+                    </div>
+                    <div class="dresscode-gallery-item">
+                        <img src="asset/29cc6113-1be8-45e6-8c38-4b2115fdb1d4.png" alt="Dresscode Beispiel 2">
+                    </div>
+                    <div class="dresscode-gallery-item">
+                        <img src="asset/71931f3e-d8a6-4291-9814-59c6609f4e5a.png" alt="Dresscode Beispiel 3">
+                    </div>
+                    <div class="dresscode-gallery-item">
+                        <img src="asset/ChatGPT Image 8. Feb. 2026, 16_43_47.png" alt="Dresscode Beispiel 4">
+                    </div>
+                </div>
+                <div class="password-modal-buttons" style="margin-top: 40px;">
+                    <button onclick="closeDresscodeGallery()" class="password-submit-btn" data-i18n="modal.close">Schließen</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -1563,7 +1654,7 @@
                     dresscode: 'Dresscode',
                     noCar: 'Bitte ohne Auto kommen',
                     dateTime: '14. März 2026<br>19:00 Uhr',
-                    food: 'Für Essen und Trinken ist gesorgt.<br><br>Es soll ein geselliges Zusammensein unter Freunden sein.',
+                    food: 'Für Essen und Trinken ist gesorgt.<br><br>Es soll ein geselliges Zusammensein unter Freunden sein.<br><br>Die Einladung gilt ohne Kinder. Erst ab 18 Jahren.',
                     dresscodeText: 'Kein Kostüm, keine Verkleidung.<br><br>Ein echter Stil, der aber nicht deiner ist.<br>So würdest du dich nie anziehen.<br>Elegant und festlich.<br>Bewusst außerhalb deiner Komfortzone.'
                 },
                 registration: {
@@ -1600,6 +1691,9 @@
                         message1: 'Vielen Dank für deine Anmeldung!',
                         message2: 'Wir freuen uns auf dich!'
                     },
+                    gallery: {
+                        title: 'Dresscode Beispiele'
+                    },
                     confirm: 'Bestätigen',
                     cancel: 'Abbrechen',
                     close: 'Schließen'
@@ -1634,7 +1728,7 @@
                     dresscode: 'Dress Code',
                     noCar: 'Por favor, venha sem carro',
                     dateTime: '14 de março de 2026<br>19:00',
-                    food: 'Comida e bebida estão garantidas.<br><br>Será um encontro social entre amigos.',
+                    food: 'Comida e bebida estão garantidas.<br><br>Será um encontro social entre amigos.<br><br>O convite é sem crianças. Apenas a partir de 18 anos.',
                     dresscodeText: 'Sem fantasia, sem disfarce.<br><br>Um estilo real, mas que não é seu.<br>Você nunca se vestiria assim.<br>Elegante e festivo.<br>Conscientemente fora da sua zona de conforto.'
                 },
                 registration: {
@@ -1670,6 +1764,9 @@
                         title: 'Inscrição bem-sucedida!',
                         message1: 'Obrigado pela sua inscrição!',
                         message2: 'Estamos ansiosos para vê-lo!'
+                    },
+                    gallery: {
+                        title: 'Exemplos de Dress Code'
                     },
                     confirm: 'Confirmar',
                     cancel: 'Cancelar',
@@ -1925,6 +2022,15 @@
             pendingRegistration = null;
         }
 
+        // Dresscode-Galerie Funktionen
+        function showDresscodeGallery() {
+            document.getElementById('dresscodeGalleryModal').style.display = 'flex';
+        }
+
+        function closeDresscodeGallery() {
+            document.getElementById('dresscodeGalleryModal').style.display = 'none';
+        }
+
         // Checkbox-Status überwachen
         document.addEventListener('DOMContentLoaded', function() {
             const checkbox = document.getElementById('dresscodeCheckbox');
@@ -2066,6 +2172,7 @@
             const passwordModal = document.getElementById('passwordModal');
             const dresscodeModal = document.getElementById('dresscodeModal');
             const successModal = document.getElementById('successModal');
+            const dresscodeGalleryModal = document.getElementById('dresscodeGalleryModal');
             
             if (event.target === passwordModal) {
                 closePasswordModal();
@@ -2076,6 +2183,9 @@
             if (event.target === successModal) {
                 closeSuccessModal();
             }
+            if (event.target === dresscodeGalleryModal) {
+                closeDresscodeGallery();
+            }
         });
 
         // Enter-Taste für Passwort-Eingabe und Dresscode-Bestätigung
@@ -2083,6 +2193,7 @@
             const passwordModal = document.getElementById('passwordModal');
             const dresscodeModal = document.getElementById('dresscodeModal');
             const successModal = document.getElementById('successModal');
+            const dresscodeGalleryModal = document.getElementById('dresscodeGalleryModal');
             
             if (passwordModal.style.display === 'flex' && event.key === 'Enter') {
                 checkPasswordAndExport();
@@ -2097,6 +2208,10 @@
             
             if (successModal.style.display === 'flex' && (event.key === 'Escape' || event.key === 'Enter')) {
                 closeSuccessModal();
+            }
+            
+            if (dresscodeGalleryModal.style.display === 'flex' && event.key === 'Escape') {
+                closeDresscodeGallery();
             }
         });
 
