@@ -1,0 +1,2133 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Geburtstagseinladung</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600&family=Lato:wght@300;400&family=Great+Vibes&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', 'Segoe UI', sans-serif;
+            font-weight: 300;
+            background: #000000;
+            overflow-x: hidden;
+            min-height: 100vh;
+            letter-spacing: 0.5px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            color: #FFF6E6;
+        }
+
+        /* Filigrane Ornamente */
+        .ornament {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .ornament-top-left {
+            top: 0;
+            left: 0;
+            background: radial-gradient(circle, #9CAF88 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(40px);
+        }
+
+        .ornament-top-right {
+            top: 0;
+            right: 0;
+            background: radial-gradient(circle, #007164 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(40px);
+        }
+
+        .ornament-bottom-left {
+            bottom: 0;
+            left: 0;
+            background: radial-gradient(circle, #9CAF88 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(40px);
+        }
+
+        .ornament-bottom-right {
+            bottom: 0;
+            right: 0;
+            background: radial-gradient(circle, #9CAF88 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(40px);
+        }
+
+        /* Dekorative Linien */
+        .decorative-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #D4AF37 30%, #9CAF88 50%, #D4AF37 70%, transparent);
+            opacity: 0.2;
+            z-index: 1;
+        }
+
+        .line-top {
+            top: 100px;
+            left: 10%;
+            width: 80%;
+        }
+
+        .line-bottom {
+            bottom: 100px;
+            left: 10%;
+            width: 80%;
+        }
+
+        /* Partikel-Container */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.15;
+        }
+
+        /* Hauptcontainer */
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        /* Hero Section mit Bild */
+        .hero {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero-image-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center right;
+            opacity: 0.9;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.3) 100%);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 600px;
+            padding: 80px 60px;
+            margin-left: 5%;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            color: #FFF6E6;
+            margin-bottom: 20px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            line-height: 1.2;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            color: #D4AF37;
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            font-style: italic;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .hero h2 .name-julyana {
+            font-family: 'Great Vibes', 'Dancing Script', cursive;
+            font-size: 5.5rem;
+            color: #D4AF37;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: none;
+            font-style: normal;
+            text-shadow: 0 4px 20px rgba(212, 175, 55, 0.6), 0 2px 10px rgba(0, 0, 0, 0.8);
+            margin-top: 10px;
+            line-height: 1.2;
+            transform: rotate(-1deg);
+            display: inline-block;
+        }
+
+        .hero .gold-text {
+            color: #9CAF88;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            margin: 30px 0;
+            font-weight: 400;
+            letter-spacing: 2px;
+            font-style: italic;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero .date {
+            font-size: 1rem;
+            color: #FFF6E6;
+            margin: 40px 0 50px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            opacity: 0.9;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Filigrane Trennlinie */
+        .divider {
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #9CAF88 30%, #D4AF37 50%, #9CAF88 70%, transparent);
+            margin: 30px 0;
+            opacity: 0.5;
+        }
+
+        /* Button */
+        .cta-button {
+            background: transparent;
+            color: #FFF6E6;
+            padding: 14px 42px;
+            font-size: 0.85rem;
+            border: 1px solid #D4AF37;
+            border-radius: 0;
+            cursor: pointer;
+            margin-top: 20px;
+            animation: fadeInUp 2s ease-out;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #D4AF37;
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .cta-button:hover {
+            color: #000;
+            border-color: #D4AF37;
+        }
+
+        .cta-button:hover::before {
+            left: 0;
+        }
+
+        .cta-button:active {
+            transform: translateY(1px);
+        }
+
+        /* Countdown */
+        .countdown {
+            text-align: center;
+            padding: 100px 40px;
+            background: #000;
+            color: #FFF6E6;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .countdown::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #D4AF37 30%, #9CAF88 50%, #D4AF37 70%, transparent);
+            opacity: 0.3;
+        }
+
+        .countdown::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #D4AF37 30%, #9CAF88 50%, #D4AF37 70%, transparent);
+            opacity: 0.3;
+        }
+
+        .countdown h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin-bottom: 60px;
+            color: #FFF6E6;
+            font-weight: 400;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+        }
+
+        .countdown h3::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, #D4AF37 40%, #9CAF88 50%, #D4AF37 60%);
+            opacity: 0.5;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .countdown-item {
+            background: transparent;
+            padding: 30px 20px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .countdown-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #D4AF37 40%, #9CAF88 50%, #D4AF37 60%, transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .countdown-item:hover {
+            border-color: rgba(212, 175, 55, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .countdown-item:hover::before {
+            opacity: 0.5;
+        }
+
+        .countdown-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 400;
+            color: #9CAF88;
+            display: block;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
+        }
+        
+        .countdown-item:hover .countdown-number {
+            color: #D4AF37;
+        }
+
+        .countdown-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #FFF6E6;
+            opacity: 0.7;
+            font-weight: 300;
+        }
+
+        /* Details Section */
+        .details {
+            background: #000;
+            padding: 100px 40px;
+            margin: 0;
+            position: relative;
+        }
+
+        .details h3 {
+            font-family: 'Playfair Display', serif;
+            color: #FFF6E6;
+            font-size: 2.2rem;
+            margin-bottom: 80px;
+            text-align: center;
+            font-weight: 400;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .details h3::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, #D4AF37 40%, #9CAF88 50%, #D4AF37 60%);
+            opacity: 0.5;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 60px;
+            margin-top: 80px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .detail-card {
+            background: transparent;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .detail-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #D4AF37 40%, #9CAF88 50%, #D4AF37 60%, transparent);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .detail-card:hover::before {
+            opacity: 0.5;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .detail-card .icon {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            opacity: 0.6;
+            transition: opacity 0.3s ease, color 0.3s ease;
+            color: #9CAF88;
+            font-weight: 300;
+        }
+        
+        .detail-card:hover .icon {
+            color: #D4AF37;
+        }
+
+        .detail-card:hover .icon {
+            opacity: 1;
+        }
+
+        .detail-card h4 {
+            font-family: 'Playfair Display', serif;
+            color: #FFF6E6;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .detail-card p {
+            color: #FFF6E6;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            font-weight: 300;
+            opacity: 0.7;
+        }
+
+        /* Registrierungsformular */
+        .registration {
+            background: #000;
+            padding: 100px 40px;
+            margin: 0;
+            position: relative;
+        }
+
+        .registration h3 {
+            font-family: 'Playfair Display', serif;
+            color: #FFF6E6;
+            font-size: 2.2rem;
+            margin-bottom: 60px;
+            text-align: center;
+            font-weight: 400;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .registration h3::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, #D4AF37 40%, #9CAF88 50%, #D4AF37 60%);
+            opacity: 0.5;
+        }
+
+        .registration-form {
+            max-width: 600px;
+            margin: 80px auto 0;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #FFF6E6;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 20px;
+            background: transparent;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            color: #FFF6E6;
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #9CAF88;
+            background: rgba(156, 175, 136, 0.05);
+        }
+        
+        .form-group input:focus:hover,
+        .form-group textarea:focus:hover {
+            border-color: #D4AF37;
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 246, 230, 0.4);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-note {
+            font-size: 0.85rem;
+            color: rgba(255, 246, 230, 0.6);
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .submit-button {
+            background: transparent;
+            color: #FFF6E6;
+            padding: 16px 50px;
+            font-size: 0.9rem;
+            border: 1px solid #D4AF37;
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Lato', sans-serif;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .submit-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #D4AF37;
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .submit-button:hover {
+            color: #000;
+            border-color: #D4AF37;
+        }
+
+        .submit-button:hover::before {
+            left: 0;
+        }
+
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .message {
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            border: 1px solid;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .message.success {
+            color: #D4AF37;
+            border-color: rgba(212, 175, 55, 0.3);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .message.error {
+            color: #ff6b6b;
+            border-color: rgba(255, 107, 107, 0.3);
+            background: rgba(255, 107, 107, 0.05);
+        }
+
+        /* Footer */
+        /* Export Button (unauffällig) */
+        .export-button {
+            background: transparent;
+            color: rgba(255, 246, 230, 0.3);
+            padding: 6px 12px;
+            font-size: 0.65rem;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Lato', sans-serif;
+            opacity: 0.4;
+        }
+
+        .export-button:hover {
+            opacity: 0.7;
+            color: rgba(255, 246, 230, 0.5);
+            border-color: rgba(212, 175, 55, 0.2);
+        }
+
+        /* Passwort-Modal */
+        .password-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .password-modal-content {
+            background: #000;
+            padding: 40px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .password-modal-content h4 {
+            font-family: 'Playfair Display', serif;
+            color: #FFF6E6;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: transparent;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: #FFF6E6;
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: #D4AF37;
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .password-modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .password-submit-btn,
+        .password-cancel-btn {
+            padding: 10px 25px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: transparent;
+            color: #FFF6E6;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .password-submit-btn {
+            border-color: #D4AF37;
+        }
+
+        .password-submit-btn:hover {
+            background: #D4AF37;
+            color: #000;
+        }
+
+        .password-cancel-btn:hover {
+            border-color: rgba(255, 246, 230, 0.5);
+            color: rgba(255, 246, 230, 0.8);
+        }
+
+        .password-error {
+            margin-top: 15px;
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            font-weight: 300;
+        }
+
+        /* Dresscode-Modal */
+        .dresscode-modal-content {
+            max-width: 500px;
+            text-align: left;
+        }
+
+        .dresscode-info {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .dresscode-info p {
+            color: #FFF6E6;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .dresscode-checkbox {
+            margin-bottom: 25px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            cursor: pointer;
+            color: #FFF6E6;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .checkbox-input {
+            margin-right: 12px;
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #D4AF37;
+            flex-shrink: 0;
+        }
+
+        .checkbox-text {
+            flex: 1;
+        }
+
+        .password-submit-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .password-submit-btn:disabled:hover {
+            background: transparent;
+            color: #FFF6E6;
+        }
+
+        /* Erfolgs-Bestätigungs-Modal */
+        .success-modal-content {
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(156, 175, 136, 0.2) 0%, rgba(212, 175, 55, 0.2) 100%);
+            border: 2px solid #9CAF88;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 3rem;
+            color: #9CAF88;
+            font-weight: 300;
+            animation: successPulse 0.6s ease-out;
+        }
+        
+        .success-icon:hover {
+            border-color: #D4AF37;
+            color: #D4AF37;
+        }
+
+        @keyframes successPulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-modal-content h4 {
+            color: #D4AF37;
+            margin-bottom: 20px;
+        }
+
+        .success-message {
+            margin-bottom: 30px;
+        }
+
+        .success-message p {
+            color: #FFF6E6;
+            font-size: 1rem;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 80px 20px 60px;
+            color: #FFF6E6;
+            font-size: 0.9rem;
+            margin-top: 0;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+            opacity: 0.6;
+            font-weight: 300;
+            letter-spacing: 2px;
+            background: #000;
+        }
+
+        /* Animationen */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(5deg);
+            }
+        }
+
+        @keyframes shimmer {
+            0%, 100% {
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Filigrane Partikel */
+        .particle {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            background: #D4AF37;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content {
+                padding: 60px 40px;
+                margin-left: 3%;
+            }
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            .hero h2 .name-julyana {
+                font-size: 4.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* Hero Section Mobile */
+            .hero {
+                min-height: 100vh;
+                flex-direction: column;
+            }
+            
+            .hero-image-wrapper {
+                height: 50%;
+                top: 0;
+            }
+            
+            .hero-overlay {
+                background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 30%, rgba(0,0,0,0.9) 60%, rgba(0,0,0,0.95) 100%);
+            }
+            
+            .hero-content {
+                padding: 30px 20px 40px;
+                margin-left: 0;
+                margin-right: 0;
+                max-width: 100%;
+                margin-top: auto;
+                text-align: center;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+                margin-bottom: 15px;
+            }
+            
+            .hero h2 {
+                font-size: 1rem;
+                letter-spacing: 4px;
+                margin-bottom: 20px;
+            }
+            
+            .hero h2 .name-julyana {
+                font-size: 3rem;
+                margin-top: 5px;
+                display: block;
+            }
+            
+            .hero .gold-text {
+                font-size: 1rem;
+                margin: 20px 0;
+            }
+            
+            .hero .date {
+                font-size: 0.75rem;
+                margin: 25px 0 30px;
+                letter-spacing: 2px;
+            }
+            
+            .divider {
+                width: 80px;
+                margin: 20px auto;
+            }
+            
+            .cta-button {
+                padding: 14px 35px;
+                font-size: 0.8rem;
+                letter-spacing: 2px;
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            /* Countdown Mobile */
+            .countdown {
+                padding: 50px 20px;
+            }
+            
+            .countdown h3 {
+                font-size: 1.6rem;
+                letter-spacing: 3px;
+                margin-bottom: 40px;
+            }
+            
+            .countdown-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                max-width: 100%;
+            }
+            
+            .countdown-item {
+                padding: 20px 15px;
+            }
+            
+            .countdown-number {
+                font-size: 2.2rem;
+            }
+            
+            .countdown-label {
+                font-size: 0.7rem;
+                letter-spacing: 1.5px;
+            }
+            
+            /* Details Mobile */
+            .details {
+                padding: 50px 20px;
+            }
+            
+            .details h3 {
+                font-size: 1.6rem;
+                letter-spacing: 3px;
+                margin-bottom: 50px;
+            }
+            
+            .details-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                margin-top: 50px;
+            }
+            
+            .detail-card {
+                padding: 30px 20px;
+            }
+            
+            .detail-card .icon {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+            
+            .detail-card h4 {
+                font-size: 1rem;
+                letter-spacing: 2px;
+                margin-bottom: 15px;
+            }
+            
+            .detail-card p {
+                font-size: 0.9rem;
+                line-height: 1.6;
+            }
+            
+            /* Registration Mobile */
+            .registration {
+                padding: 50px 20px;
+            }
+            
+            .registration h3 {
+                font-size: 1.6rem;
+                letter-spacing: 3px;
+                margin-bottom: 40px;
+            }
+            
+            .registration-form {
+                max-width: 100%;
+                margin-top: 50px;
+            }
+            
+            .form-group {
+                margin-bottom: 25px;
+            }
+            
+            .form-group label {
+                font-size: 0.85rem;
+                margin-bottom: 8px;
+                letter-spacing: 1.5px;
+            }
+            
+            .form-group input,
+            .form-group textarea {
+                padding: 12px 16px;
+                font-size: 0.95rem;
+            }
+            
+            .form-group textarea {
+                min-height: 80px;
+            }
+            
+            .form-note {
+                font-size: 0.8rem;
+            }
+            
+            .submit-button {
+                padding: 14px 30px;
+                font-size: 0.85rem;
+                letter-spacing: 2px;
+            }
+            
+            .export-button {
+                padding: 6px 12px;
+                font-size: 0.6rem;
+                letter-spacing: 1px;
+            }
+            
+            .password-modal-content {
+                padding: 30px 20px;
+                max-width: 90%;
+            }
+            
+            .password-modal-content h4 {
+                font-size: 1rem;
+            }
+            
+            .password-input {
+                padding: 10px 14px;
+                font-size: 0.9rem;
+            }
+            
+            .password-submit-btn,
+            .password-cancel-btn {
+                padding: 8px 20px;
+                font-size: 0.8rem;
+            }
+            
+            .dresscode-modal-content {
+                max-width: 90%;
+                padding: 25px 15px;
+            }
+            
+            .dresscode-info p {
+                font-size: 0.85rem;
+            }
+            
+            .checkbox-label {
+                font-size: 0.85rem;
+            }
+            
+            .checkbox-input {
+                width: 16px;
+                height: 16px;
+            }
+            
+            .success-modal-content {
+                max-width: 90%;
+                padding: 30px 20px;
+            }
+            
+            .success-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 2.5rem;
+                margin-bottom: 20px;
+            }
+            
+            .success-message p {
+                font-size: 0.9rem;
+            }
+            
+            /* Footer Mobile */
+            .footer {
+                padding: 50px 20px 40px;
+                font-size: 0.85rem;
+            }
+            
+            /* Container Mobile */
+            .container {
+                padding: 0;
+            }
+            
+            /* Ornamente reduzieren */
+            .ornament {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .decorative-line {
+                opacity: 0.1;
+            }
+        }
+        
+        /* Extra kleine Bildschirme */
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero h2 {
+                font-size: 0.9rem;
+            }
+            
+            .hero h2 .name-julyana {
+                font-size: 2.5rem;
+            }
+            
+            .countdown-grid {
+                gap: 15px;
+            }
+            
+            .countdown-item {
+                padding: 15px 10px;
+            }
+            
+            .countdown-number {
+                font-size: 1.8rem;
+            }
+            
+            .countdown h3,
+            .details h3,
+            .registration h3 {
+                font-size: 1.4rem;
+            }
+        }
+
+        /* Konfetti */
+        .confetti {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: #D4AF37;
+            position: absolute;
+            animation: confetti-fall linear forwards;
+            opacity: 0.7;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Schwebende Herzen entfernt - zu verspielt für edles Design */
+        
+        /* Sprachumschalter */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 0;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(156, 175, 136, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .lang-btn {
+            background: transparent;
+            color: rgba(255, 246, 230, 0.6);
+            border: none;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Lato', sans-serif;
+            border-right: 1px solid rgba(156, 175, 136, 0.2);
+        }
+
+        .lang-btn:last-child {
+            border-right: none;
+        }
+
+        .lang-btn:hover {
+            color: #FFF6E6;
+            background: rgba(156, 175, 136, 0.1);
+        }
+
+        .lang-btn.active {
+            color: #9CAF88;
+            background: rgba(156, 175, 136, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .language-switcher {
+                top: 15px;
+                right: 15px;
+            }
+            .lang-btn {
+                padding: 6px 12px;
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Filigrane Ornamente -->
+    <div class="ornament ornament-top-left"></div>
+    <div class="ornament ornament-top-right"></div>
+    <div class="ornament ornament-bottom-left"></div>
+    <div class="ornament ornament-bottom-right"></div>
+    
+    <!-- Dekorative Linien -->
+    <div class="decorative-line line-top"></div>
+    <div class="decorative-line line-bottom"></div>
+    
+    <div id="particles"></div>
+    
+    <!-- Sprachumschalter -->
+    <div class="language-switcher">
+        <button onclick="switchLanguage('de')" id="lang-de" class="lang-btn active">DE</button>
+        <button onclick="switchLanguage('pt')" id="lang-pt" class="lang-btn">PT</button>
+    </div>
+    
+    <div class="container">
+        <!-- Hero Section mit Titelbild -->
+        <div class="hero">
+            <div class="hero-image-wrapper">
+                <img src="hero-image.png" alt="Geburtstag" class="hero-image" id="heroImage">
+                <div class="hero-overlay"></div>
+            </div>
+            <div class="hero-content">
+                <h2 data-i18n="hero.subtitle">Zum Geburtstag von<br><span class="name-julyana">Julyana</span></h2>
+                <h1>40+1</h1>
+                <div class="divider"></div>
+                <div class="gold-text" data-i18n="hero.invited">Du bist eingeladen</div>
+                <div class="date" id="birthdayDate" data-i18n="hero.date">Datum wird geladen...</div>
+                <button class="cta-button" onclick="document.getElementById('registration').scrollIntoView({behavior: 'smooth'})" data-i18n="hero.register">Jetzt registrieren</button>
+            </div>
+        </div>
+
+        <!-- Countdown -->
+        <div class="countdown">
+            <h3 data-i18n="countdown.title">Countdown bis zur Feier</h3>
+            <div class="countdown-grid">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">0</span>
+                    <span class="countdown-label" data-i18n="countdown.days">Tage</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">0</span>
+                    <span class="countdown-label" data-i18n="countdown.hours">Stunden</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">0</span>
+                    <span class="countdown-label" data-i18n="countdown.minutes">Minuten</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">0</span>
+                    <span class="countdown-label" data-i18n="countdown.seconds">Sekunden</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details -->
+        <div class="details">
+            <h3 data-i18n="details.title">Feier Details</h3>
+            <div class="details-grid">
+                <div class="detail-card">
+                    <div class="icon">○</div>
+                    <h4 data-i18n="details.where">Wo</h4>
+                    <p id="location">Althardstrasse 170<br>8105 Regensdorf</p>
+                    <p style="margin-top: 15px; font-size: 0.85rem; opacity: 0.6;" data-i18n="details.noCar">Bitte ohne Auto kommen</p>
+                </div>
+                <div class="detail-card">
+                    <div class="icon">○</div>
+                    <h4 data-i18n="details.when">Wann</h4>
+                    <p id="time" data-i18n="details.dateTime">14. März 2026<br>19:00 Uhr</p>
+                </div>
+                <div class="detail-card">
+                    <div class="icon">○</div>
+                    <h4 data-i18n="details.what">Was</h4>
+                    <p data-i18n="details.food">Für Essen und Trinken ist gesorgt.<br><br>Es soll ein geselliges Zusammensein unter Freunden sein.</p>
+                </div>
+                <div class="detail-card">
+                    <div class="icon">○</div>
+                    <h4 data-i18n="details.dresscode">Dresscode</h4>
+                    <p style="margin-top: 15px; font-size: 0.85rem; line-height: 1.8;" data-i18n="details.dresscodeText">Kein Kostüm, keine Verkleidung.<br><br>Ein echter Stil, der aber nicht deiner ist.<br>So würdest du dich nie anziehen.<br>Elegant und festlich.<br>Bewusst außerhalb deiner Komfortzone.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registrierung -->
+        <div class="registration" id="registration">
+            <h3 data-i18n="registration.title">Anmeldung</h3>
+            <form class="registration-form" onsubmit="registerGuest(event)">
+                <div class="form-group">
+                    <label for="name" data-i18n="registration.name">Dein Name *</label>
+                    <input type="text" id="name" name="name" required data-i18n-placeholder="registration.namePlaceholder" placeholder="Vorname Nachname">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" data-i18n="registration.email">Deine E-Mail *</label>
+                    <input type="email" id="email" name="email" required data-i18n-placeholder="registration.emailPlaceholder" placeholder="deine@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="partnerName" data-i18n="registration.partnerName">Name deines Partners / deiner Partnerin</label>
+                    <input type="text" id="partnerName" name="partnerName" data-i18n-placeholder="registration.optional" placeholder="Optional">
+                    <div class="form-note" data-i18n="registration.partnerNote">Falls du mit Partner/in kommst</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="partnerEmail" data-i18n="registration.partnerEmail">E-Mail deines Partners / deiner Partnerin</label>
+                    <input type="email" id="partnerEmail" name="partnerEmail" data-i18n-placeholder="registration.optional" placeholder="Optional">
+                    <div class="form-note" data-i18n="registration.partnerEmailNote">Falls vorhanden (für separate Registrierung)</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes" data-i18n="registration.notes">Anmerkungen</label>
+                    <textarea id="notes" name="notes" data-i18n-placeholder="registration.notesPlaceholder" placeholder="Allergien, Wünsche, etc. (optional)"></textarea>
+                </div>
+                
+                <button type="submit" class="submit-button" data-i18n="registration.submit">Anmelden</button>
+            </form>
+            
+            <!-- Admin-Bereich für Export (unauffällig) -->
+            <div style="text-align: center; margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(212, 175, 55, 0.05);">
+                <button onclick="showPasswordModal()" class="export-button">
+                    Export
+                </button>
+            </div>
+            
+            <!-- Passwort-Modal -->
+            <div id="passwordModal" class="password-modal" style="display: none;">
+                <div class="password-modal-content">
+                    <h4 data-i18n="modal.password.title">Passwort erforderlich</h4>
+                    <input type="password" id="passwordInput" data-i18n-placeholder="modal.password.placeholder" placeholder="Passwort eingeben" class="password-input">
+                    <div class="password-modal-buttons">
+                        <button onclick="checkPasswordAndExport()" class="password-submit-btn" data-i18n="modal.confirm">Bestätigen</button>
+                        <button onclick="closePasswordModal()" class="password-cancel-btn" data-i18n="modal.cancel">Abbrechen</button>
+                    </div>
+                    <div id="passwordError" class="password-error" style="display: none;"></div>
+                </div>
+            </div>
+            
+            <!-- Dresscode-Bestätigungs-Modal -->
+            <div id="dresscodeModal" class="password-modal" style="display: none;">
+                <div class="password-modal-content dresscode-modal-content">
+                    <h4 data-i18n="modal.dresscode.title">Dresscode Bestätigung</h4>
+                    <div class="dresscode-info">
+                        <p style="margin-bottom: 8px; line-height: 1.8;" data-i18n="modal.dresscode.line1">Kein Kostüm, keine Verkleidung.</p>
+                        <p style="margin-bottom: 8px; line-height: 1.8;" data-i18n="modal.dresscode.line2">Ein echter Stil, der aber nicht deiner ist.</p>
+                        <p style="margin-bottom: 8px; line-height: 1.8;" data-i18n="modal.dresscode.line3">So würdest du dich nie anziehen.</p>
+                        <p style="margin-bottom: 8px; line-height: 1.8;" data-i18n="modal.dresscode.line4">Elegant und festlich.</p>
+                        <p style="margin-bottom: 20px; line-height: 1.8; opacity: 0.9;" data-i18n="modal.dresscode.line5">Bewusst außerhalb deiner Komfortzone.</p>
+                    </div>
+                    <div class="dresscode-checkbox">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="dresscodeCheckbox" class="checkbox-input">
+                            <span class="checkbox-text" data-i18n="modal.dresscode.confirm">Ich bestätige, dass ich mit dem Dresscode komme</span>
+                        </label>
+                    </div>
+                    <div class="password-modal-buttons">
+                        <button onclick="confirmDresscodeAndRegister()" id="dresscodeConfirmBtn" class="password-submit-btn" disabled data-i18n="modal.confirm">Bestätigen</button>
+                        <button onclick="closeDresscodeModal()" class="password-cancel-btn" data-i18n="modal.cancel">Abbrechen</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Erfolgs-Bestätigungs-Modal -->
+            <div id="successModal" class="password-modal" style="display: none;">
+                <div class="password-modal-content success-modal-content">
+                    <div class="success-icon">✓</div>
+                    <h4 data-i18n="modal.success.title">Anmeldung erfolgreich!</h4>
+                    <div class="success-message" id="successMessage">
+                        <p data-i18n="modal.success.message1">Vielen Dank für deine Anmeldung!</p>
+                        <p style="margin-top: 15px; opacity: 0.9;" data-i18n="modal.success.message2">Wir freuen uns auf dich!</p>
+                    </div>
+                    <div class="password-modal-buttons">
+                        <button onclick="closeSuccessModal()" class="password-submit-btn" data-i18n="modal.close">Schließen</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Übersetzungen
+        const translations = {
+            de: {
+                hero: {
+                    subtitle: 'Zum Geburtstag von<br><span class="name-julyana">Julyana</span>',
+                    invited: 'Du bist eingeladen',
+                    date: 'Datum wird geladen...',
+                    register: 'Jetzt registrieren'
+                },
+                countdown: {
+                    title: 'Countdown bis zur Feier',
+                    days: 'Tage',
+                    hours: 'Stunden',
+                    minutes: 'Minuten',
+                    seconds: 'Sekunden'
+                },
+                details: {
+                    title: 'Feier Details',
+                    where: 'Wo',
+                    when: 'Wann',
+                    what: 'Was',
+                    dresscode: 'Dresscode',
+                    noCar: 'Bitte ohne Auto kommen',
+                    dateTime: '14. März 2026<br>19:00 Uhr',
+                    food: 'Für Essen und Trinken ist gesorgt.<br><br>Es soll ein geselliges Zusammensein unter Freunden sein.',
+                    dresscodeText: 'Kein Kostüm, keine Verkleidung.<br><br>Ein echter Stil, der aber nicht deiner ist.<br>So würdest du dich nie anziehen.<br>Elegant und festlich.<br>Bewusst außerhalb deiner Komfortzone.'
+                },
+                registration: {
+                    title: 'Anmeldung',
+                    name: 'Dein Name *',
+                    namePlaceholder: 'Vorname Nachname',
+                    email: 'Deine E-Mail *',
+                    emailPlaceholder: 'deine@email.com',
+                    partnerName: 'Name deines Partners / deiner Partnerin',
+                    partnerEmail: 'E-Mail deines Partners / deiner Partnerin',
+                    partnerNote: 'Falls du mit Partner/in kommst',
+                    partnerEmailNote: 'Falls vorhanden (für separate Registrierung)',
+                    notes: 'Anmerkungen',
+                    notesPlaceholder: 'Allergien, Wünsche, etc. (optional)',
+                    optional: 'Optional',
+                    submit: 'Anmelden'
+                },
+                modal: {
+                    password: {
+                        title: 'Passwort erforderlich',
+                        placeholder: 'Passwort eingeben'
+                    },
+                    dresscode: {
+                        title: 'Dresscode Bestätigung',
+                        line1: 'Kein Kostüm, keine Verkleidung.',
+                        line2: 'Ein echter Stil, der aber nicht deiner ist.',
+                        line3: 'So würdest du dich nie anziehen.',
+                        line4: 'Elegant und festlich.',
+                        line5: 'Bewusst außerhalb deiner Komfortzone.',
+                        confirm: 'Ich bestätige, dass ich mit dem Dresscode komme'
+                    },
+                    success: {
+                        title: 'Anmeldung erfolgreich!',
+                        message1: 'Vielen Dank für deine Anmeldung!',
+                        message2: 'Wir freuen uns auf dich!'
+                    },
+                    confirm: 'Bestätigen',
+                    cancel: 'Abbrechen',
+                    close: 'Schließen'
+                },
+                messages: {
+                    requiredFields: 'Bitte fülle alle Pflichtfelder aus.',
+                    invalidEmail: 'Bitte gib eine gültige E-Mail-Adresse ein.',
+                    duplicateEmail: 'Diese E-Mail-Adresse ist bereits registriert.',
+                    wrongPassword: 'Falsches Passwort',
+                    success: 'Vielen Dank für deine Anmeldung! Wir freuen uns auf dich'
+                }
+            },
+            pt: {
+                hero: {
+                    subtitle: 'Para o aniversário de<br><span class="name-julyana">Julyana</span>',
+                    invited: 'Você está convidado',
+                    date: 'Carregando data...',
+                    register: 'Registrar agora'
+                },
+                countdown: {
+                    title: 'Contagem regressiva para a festa',
+                    days: 'Dias',
+                    hours: 'Horas',
+                    minutes: 'Minutos',
+                    seconds: 'Segundos'
+                },
+                details: {
+                    title: 'Detalhes da Festa',
+                    where: 'Onde',
+                    when: 'Quando',
+                    what: 'O que',
+                    dresscode: 'Dress Code',
+                    noCar: 'Por favor, venha sem carro',
+                    dateTime: '14 de março de 2026<br>19:00',
+                    food: 'Comida e bebida estão garantidas.<br><br>Será um encontro social entre amigos.',
+                    dresscodeText: 'Sem fantasia, sem disfarce.<br><br>Um estilo real, mas que não é seu.<br>Você nunca se vestiria assim.<br>Elegante e festivo.<br>Conscientemente fora da sua zona de conforto.'
+                },
+                registration: {
+                    title: 'Inscrição',
+                    name: 'Seu Nome *',
+                    namePlaceholder: 'Nome Sobrenome',
+                    email: 'Seu E-mail *',
+                    emailPlaceholder: 'seu@email.com',
+                    partnerName: 'Nome do seu parceiro / parceira',
+                    partnerEmail: 'E-mail do seu parceiro / parceira',
+                    partnerNote: 'Se você vem com parceiro/a',
+                    partnerEmailNote: 'Se disponível (para registro separado)',
+                    notes: 'Observações',
+                    notesPlaceholder: 'Alergias, desejos, etc. (opcional)',
+                    optional: 'Opcional',
+                    submit: 'Inscrever'
+                },
+                modal: {
+                    password: {
+                        title: 'Senha necessária',
+                        placeholder: 'Digite a senha'
+                    },
+                    dresscode: {
+                        title: 'Confirmação do Dress Code',
+                        line1: 'Sem fantasia, sem disfarce.',
+                        line2: 'Um estilo real, mas que não é seu.',
+                        line3: 'Você nunca se vestiria assim.',
+                        line4: 'Elegante e festivo.',
+                        line5: 'Conscientemente fora da sua zona de conforto.',
+                        confirm: 'Confirmo que vou com o dress code'
+                    },
+                    success: {
+                        title: 'Inscrição bem-sucedida!',
+                        message1: 'Obrigado pela sua inscrição!',
+                        message2: 'Estamos ansiosos para vê-lo!'
+                    },
+                    confirm: 'Confirmar',
+                    cancel: 'Cancelar',
+                    close: 'Fechar'
+                },
+                messages: {
+                    requiredFields: 'Por favor, preencha todos os campos obrigatórios.',
+                    invalidEmail: 'Por favor, insira um endereço de e-mail válido.',
+                    duplicateEmail: 'Este endereço de e-mail já está registrado.',
+                    wrongPassword: 'Senha incorreta',
+                    success: 'Obrigado pela sua inscrição! Estamos ansiosos para vê-lo'
+                }
+            }
+        };
+
+        let currentLanguage = localStorage.getItem('language') || 'de';
+
+        // Sprache wechseln
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('language', lang);
+            updateLanguage();
+            
+            // Aktive Klasse setzen
+            document.getElementById('lang-de').classList.toggle('active', lang === 'de');
+            document.getElementById('lang-pt').classList.toggle('active', lang === 'pt');
+            
+            // HTML lang Attribut aktualisieren
+            document.documentElement.lang = lang;
+        }
+
+        // Übersetzungen anwenden
+        function updateLanguage() {
+            const lang = translations[currentLanguage];
+            
+            // Alle Elemente mit data-i18n durchgehen
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const keys = key.split('.');
+                let value = lang;
+                
+                for (const k of keys) {
+                    value = value[k];
+                }
+                
+                if (value) {
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        // Für Input-Felder wird der Placeholder aktualisiert
+                        if (element.hasAttribute('data-i18n-placeholder')) {
+                            const placeholderKey = element.getAttribute('data-i18n-placeholder');
+                            const placeholderKeys = placeholderKey.split('.');
+                            let placeholderValue = lang;
+                            for (const k of placeholderKeys) {
+                                placeholderValue = placeholderValue[k];
+                            }
+                            if (placeholderValue) {
+                                element.placeholder = placeholderValue;
+                            }
+                        }
+                    } else {
+                        element.innerHTML = value;
+                    }
+                }
+            });
+            
+            // Placeholder für Input-Felder aktualisieren
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                const keys = key.split('.');
+                let value = lang;
+                
+                for (const k of keys) {
+                    value = value[k];
+                }
+                
+                if (value && (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA')) {
+                    element.placeholder = value;
+                }
+            });
+            
+            // Datum aktualisieren
+            setBirthdayDate();
+        }
+
+        // Filigrane Partikel
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 1.5 + 0.5 + 'px';
+                particle.style.height = particle.style.width;
+                const colors = ['#D4AF37', '#007164', '#9CAF88'];
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.opacity = Math.random() * 0.2 + 0.1;
+                particle.style.animationDuration = Math.random() * 20 + 15 + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Konfetti-Effekt (dezent)
+        function createConfetti() {
+            const colors = ['#D4AF37', '#007164', '#9CAF88'];
+            const confettiCount = 30;
+
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 3 + 2 + 'px';
+                confetti.style.height = confetti.style.width;
+                confetti.style.opacity = 0.5;
+                confetti.style.animationDuration = Math.random() * 2 + 3 + 's';
+                confetti.style.animationDelay = Math.random() * 0.3 + 's';
+                document.body.appendChild(confetti);
+
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+
+        // Countdown
+        function updateCountdown() {
+            const birthdayDate = new Date('2026-03-14T19:00:00');
+            const now = new Date();
+            const diff = birthdayDate - now;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = hours;
+                document.getElementById('minutes').textContent = minutes;
+                document.getElementById('seconds').textContent = seconds;
+            } else {
+                document.getElementById('days').textContent = '0';
+                document.getElementById('hours').textContent = '0';
+                document.getElementById('minutes').textContent = '0';
+                document.getElementById('seconds').textContent = '0';
+            }
+        }
+
+        // Geburtstagsdatum anzeigen
+        function setBirthdayDate() {
+            const birthdayDate = new Date('2026-03-14T19:00:00');
+            const locale = currentLanguage === 'de' ? 'de-DE' : 'pt-BR';
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            const dateElement = document.getElementById('birthdayDate');
+            if (dateElement) {
+                dateElement.textContent = birthdayDate.toLocaleDateString(locale, options);
+            }
+        }
+
+        // Registrierungssystem
+        function getRegistrations() {
+            const stored = localStorage.getItem('birthdayRegistrations');
+            return stored ? JSON.parse(stored) : [];
+        }
+
+        function saveRegistrations(registrations) {
+            localStorage.setItem('birthdayRegistrations', JSON.stringify(registrations));
+            // JSON-Datei für Export erstellen
+            const dataStr = JSON.stringify(registrations, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            // Speichere auch als Download-Link für späteren Export
+            const url = URL.createObjectURL(dataBlob);
+            window.registrationDataUrl = url;
+        }
+
+        function isDuplicate(email, partnerEmail) {
+            const registrations = getRegistrations();
+            return registrations.some(reg => 
+                reg.email.toLowerCase() === email.toLowerCase() ||
+                (partnerEmail && reg.partnerEmail && reg.partnerEmail.toLowerCase() === partnerEmail.toLowerCase()) ||
+                (reg.partnerEmail && reg.partnerEmail.toLowerCase() === email.toLowerCase())
+            );
+        }
+
+        // Temporäre Speicherung der Formulardaten
+        let pendingRegistration = null;
+
+        function registerGuest(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            const name = formData.get('name').trim();
+            const email = formData.get('email').trim().toLowerCase();
+            const partnerName = formData.get('partnerName')?.trim() || '';
+            const partnerEmail = formData.get('partnerEmail')?.trim().toLowerCase() || '';
+            const notes = formData.get('notes')?.trim() || '';
+
+            const lang = translations[currentLanguage];
+            
+            // Validierung
+            if (!name || !email) {
+                showMessage(lang.messages.requiredFields, 'error');
+                return;
+            }
+
+            if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                showMessage(lang.messages.invalidEmail, 'error');
+                return;
+            }
+
+            // Doppelregistrierung prüfen
+            if (isDuplicate(email, partnerEmail)) {
+                showMessage(lang.messages.duplicateEmail, 'error');
+                return;
+            }
+
+            // Formulardaten temporär speichern
+            pendingRegistration = {
+                name: name,
+                email: email,
+                partnerName: partnerName,
+                partnerEmail: partnerEmail,
+                notes: notes,
+                form: form
+            };
+
+            // Dresscode-Modal anzeigen
+            showDresscodeModal();
+        }
+
+        function showDresscodeModal() {
+            document.getElementById('dresscodeModal').style.display = 'flex';
+            document.getElementById('dresscodeCheckbox').checked = false;
+            document.getElementById('dresscodeConfirmBtn').disabled = true;
+        }
+
+        function closeDresscodeModal() {
+            document.getElementById('dresscodeModal').style.display = 'none';
+            document.getElementById('dresscodeCheckbox').checked = false;
+            pendingRegistration = null;
+        }
+
+        // Checkbox-Status überwachen
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkbox = document.getElementById('dresscodeCheckbox');
+            const confirmBtn = document.getElementById('dresscodeConfirmBtn');
+            
+            if (checkbox && confirmBtn) {
+                checkbox.addEventListener('change', function() {
+                    confirmBtn.disabled = !this.checked;
+                });
+            }
+        });
+
+        function confirmDresscodeAndRegister() {
+            if (!pendingRegistration) {
+                closeDresscodeModal();
+                return;
+            }
+
+            // Registrierung speichern
+            const registration = {
+                id: Date.now(),
+                name: pendingRegistration.name,
+                email: pendingRegistration.email,
+                partnerName: pendingRegistration.partnerName || null,
+                partnerEmail: pendingRegistration.partnerEmail || null,
+                notes: pendingRegistration.notes || null,
+                registeredAt: new Date().toISOString()
+            };
+
+            const registrations = getRegistrations();
+            registrations.push(registration);
+            saveRegistrations(registrations);
+
+            // Formular zurücksetzen
+            pendingRegistration.form.reset();
+            
+            // Dresscode-Modal schließen
+            closeDresscodeModal();
+            
+            // Erfolgs-Modal anzeigen
+            showSuccessModal(pendingRegistration.partnerName);
+        }
+
+        function showSuccessModal(partnerName) {
+            const successMessage = document.getElementById('successMessage');
+            const lang = translations[currentLanguage];
+            
+            // Übersetzungen für Erfolgsmeldung aktualisieren
+            const titleElement = document.querySelector('#successModal h4');
+            const message1Element = successMessage.querySelector('p:first-child');
+            const message2Element = successMessage.querySelector('p:last-child');
+            
+            if (titleElement) titleElement.textContent = lang.modal.success.title;
+            if (message1Element) message1Element.textContent = lang.modal.success.message1;
+            
+            if (partnerName) {
+                if (currentLanguage === 'de') {
+                    if (message2Element) message2Element.textContent = `Wir freuen uns auf dich und ${partnerName}!`;
+                } else {
+                    if (message2Element) message2Element.textContent = `Estamos ansiosos para ver você e ${partnerName}!`;
+                }
+            } else {
+                if (message2Element) message2Element.textContent = lang.modal.success.message2;
+            }
+            
+            document.getElementById('successModal').style.display = 'flex';
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
+
+        function showMessage(text, type) {
+            const existingMessage = document.querySelector('.message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+
+            const message = document.createElement('div');
+            message.className = `message ${type}`;
+            message.textContent = text;
+            
+            const form = document.querySelector('.registration-form');
+            form.appendChild(message);
+
+            setTimeout(() => {
+                message.style.opacity = '0';
+                setTimeout(() => message.remove(), 500);
+            }, 5000);
+        }
+
+        function showPasswordModal() {
+            document.getElementById('passwordModal').style.display = 'flex';
+            document.getElementById('passwordInput').focus();
+            document.getElementById('passwordError').style.display = 'none';
+        }
+
+        function closePasswordModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('passwordError').style.display = 'none';
+        }
+
+        function checkPasswordAndExport() {
+            const password = document.getElementById('passwordInput').value;
+            const correctPassword = 'Morango2201';
+            const errorDiv = document.getElementById('passwordError');
+            const lang = translations[currentLanguage];
+
+            if (password === correctPassword) {
+                exportRegistrations();
+                closePasswordModal();
+            } else {
+                errorDiv.textContent = lang.messages.wrongPassword;
+                errorDiv.style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        function exportRegistrations() {
+            const registrations = getRegistrations();
+            const dataStr = JSON.stringify(registrations, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'geburtstags-registrierungen.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        // Modal schließen bei Klick außerhalb
+        document.addEventListener('click', function(event) {
+            const passwordModal = document.getElementById('passwordModal');
+            const dresscodeModal = document.getElementById('dresscodeModal');
+            const successModal = document.getElementById('successModal');
+            
+            if (event.target === passwordModal) {
+                closePasswordModal();
+            }
+            if (event.target === dresscodeModal) {
+                closeDresscodeModal();
+            }
+            if (event.target === successModal) {
+                closeSuccessModal();
+            }
+        });
+
+        // Enter-Taste für Passwort-Eingabe und Dresscode-Bestätigung
+        document.addEventListener('keydown', function(event) {
+            const passwordModal = document.getElementById('passwordModal');
+            const dresscodeModal = document.getElementById('dresscodeModal');
+            const successModal = document.getElementById('successModal');
+            
+            if (passwordModal.style.display === 'flex' && event.key === 'Enter') {
+                checkPasswordAndExport();
+            }
+            if (passwordModal.style.display === 'flex' && event.key === 'Escape') {
+                closePasswordModal();
+            }
+            
+            if (dresscodeModal.style.display === 'flex' && event.key === 'Escape') {
+                closeDresscodeModal();
+            }
+            
+            if (successModal.style.display === 'flex' && (event.key === 'Escape' || event.key === 'Enter')) {
+                closeSuccessModal();
+            }
+        });
+
+        // Fallback für Bild falls nicht gefunden
+        function checkImage() {
+            const img = document.getElementById('heroImage');
+            img.onerror = function() {
+                this.style.display = 'none';
+                document.querySelector('.hero-overlay').style.background = 'linear-gradient(135deg, #000 0%, #1a1a1a 100%)';
+            };
+        }
+
+        // Initialisierung
+        window.addEventListener('load', () => {
+            createParticles();
+            updateLanguage(); // Sprache beim Laden anwenden
+            setBirthdayDate();
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+            checkImage();
+            
+            // Aktive Sprache im Sprachumschalter markieren
+            document.getElementById('lang-de').classList.toggle('active', currentLanguage === 'de');
+            document.getElementById('lang-pt').classList.toggle('active', currentLanguage === 'pt');
+        });
+
+        // Scroll-Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 1s ease-out';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.details, .countdown').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
