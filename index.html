@@ -921,6 +921,72 @@
             font-weight: 300;
         }
 
+        /* Export-Tabelle-Modal */
+        .export-table-modal-content {
+            max-width: 95%;
+            max-height: 90vh;
+            width: 1400px;
+            overflow-y: auto;
+            padding: 40px;
+        }
+
+        .export-table-title {
+            font-family: 'Playfair Display', serif;
+            color: #FFF6E6;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .export-table-info {
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0.7;
+            font-size: 0.9rem;
+            color: #FFF6E6;
+        }
+
+        .export-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #000;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .export-table th {
+            background: rgba(212, 175, 55, 0.1);
+            color: #D4AF37;
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+            font-size: 0.85rem;
+        }
+
+        .export-table td {
+            padding: 10px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            color: #FFF6E6;
+            font-size: 0.85rem;
+        }
+
+        .export-table tr:hover {
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .export-table-empty {
+            text-align: center;
+            padding: 40px;
+            opacity: 0.6;
+            font-style: italic;
+            color: #FFF6E6;
+        }
+
         /* Dresscode-Galerie-Modal */
         .dresscode-gallery-modal-content {
             max-width: 90%;
@@ -972,6 +1038,22 @@
         }
 
         @media (max-width: 768px) {
+            .export-table-modal-content {
+                max-width: 95%;
+                padding: 20px 15px;
+            }
+
+            .export-table-title {
+                font-size: 1.4rem;
+                margin-bottom: 20px;
+            }
+
+            .export-table th,
+            .export-table td {
+                padding: 8px 6px;
+                font-size: 0.75rem;
+            }
+
             .dresscode-gallery-modal-content {
                 max-width: 95%;
                 padding: 20px 15px;
@@ -1664,6 +1746,21 @@
             </div>
         </div>
 
+        <!-- Export-Tabelle-Modal -->
+        <div id="exportTableModal" class="password-modal" style="display: none;">
+            <div class="password-modal-content export-table-modal-content">
+                <h4 class="export-table-title">Geburtstags-Registrierungen</h4>
+                <div class="export-table-info" id="exportTableInfo">Anzahl: 0</div>
+                <div id="exportTableContainer"></div>
+                <div class="password-modal-buttons">
+                    <button onclick="exportToCSV()" class="password-submit-btn" style="background: rgba(156, 175, 136, 0.2); border-color: #9CAF88;">
+                        CSV Export
+                    </button>
+                    <button onclick="closeExportTableModal()" class="password-submit-btn" data-i18n="modal.close">Schließen</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -2196,16 +2293,168 @@
 
         function exportRegistrations() {
             const registrations = getRegistrations();
-            const dataStr = JSON.stringify(registrations, null, 2);
-            const dataBlob = new Blob([dataStr], {type: 'application/json'});
-            const url = URL.createObjectURL(dataBlob);
+            const container = document.getElementById('exportTableContainer');
+            const info = document.getElementById('exportTableInfo');
+            
+            // Alle Personen zählen (Hauptpersonen + Partner)
+            let totalPersons = 0;
+            registrations.forEach(reg => {
+                totalPersons++; // Hauptperson
+                if (reg.partnerName) {
+                    totalPersons++; // Partner
+                }
+            });
+            
+            // Info aktualisieren
+            info.textContent = `Anzahl Registrierungen: ${registrations.length} | Anzahl Personen: ${totalPersons}`;
+            
+            // Container leeren
+            container.innerHTML = '';
+            
+            if (registrations.length === 0) {
+                container.innerHTML = '<div class="export-table-empty">Noch keine Registrierungen vorhanden.</div>';
+            } else {
+                // Tabelle erstellen
+                const table = document.createElement('table');
+                table.className = 'export-table';
+                
+                // Header erstellen
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                const headers = ['#', 'Name', 'E-Mail', 'Anmerkungen', 'Registriert am'];
+                headers.forEach(header => {
+                    const th = document.createElement('th');
+                    th.textContent = header;
+                    headerRow.appendChild(th);
+                });
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+                
+                // Body erstellen
+                const tbody = document.createElement('tbody');
+                let rowIndex = 1;
+                
+                registrations.forEach((reg) => {
+                    const date = new Date(reg.registeredAt);
+                    const formattedDate = date.toLocaleDateString('de-DE', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    // Hauptperson als Zeile
+                    const mainRow = document.createElement('tr');
+                    mainRow.innerHTML = `
+                        <td>${rowIndex++}</td>
+                        <td>${escapeHtml(reg.name)}</td>
+                        <td>${escapeHtml(reg.email)}</td>
+                        <td>${reg.notes ? escapeHtml(reg.notes) : '-'}</td>
+                        <td>${formattedDate}</td>
+                    `;
+                    tbody.appendChild(mainRow);
+                    
+                    // Partner als separate Zeile, falls vorhanden
+                    if (reg.partnerName) {
+                        const partnerRow = document.createElement('tr');
+                        partnerRow.style.backgroundColor = 'rgba(212, 175, 55, 0.03)'; // Leicht andere Hintergrundfarbe für Partner
+                        partnerRow.innerHTML = `
+                            <td>${rowIndex++}</td>
+                            <td>${escapeHtml(reg.partnerName)}</td>
+                            <td>${reg.partnerEmail ? escapeHtml(reg.partnerEmail) : escapeHtml(reg.email)}</td>
+                            <td>Partner/in von ${escapeHtml(reg.name)}</td>
+                            <td>${formattedDate}</td>
+                        `;
+                        tbody.appendChild(partnerRow);
+                    }
+                });
+                table.appendChild(tbody);
+                container.appendChild(table);
+            }
+            
+            // Modal anzeigen
+            showExportTableModal();
+        }
+        
+        function showExportTableModal() {
+            document.getElementById('exportTableModal').style.display = 'flex';
+        }
+        
+        function closeExportTableModal() {
+            document.getElementById('exportTableModal').style.display = 'none';
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function exportToCSV() {
+            const registrations = getRegistrations();
+            
+            // CSV Header
+            const headers = ['#', 'Name', 'E-Mail', 'Anmerkungen', 'Registriert am'];
+            let csvContent = headers.join(';') + '\n';
+            
+            let rowIndex = 1;
+            
+            registrations.forEach((reg) => {
+                const date = new Date(reg.registeredAt);
+                const formattedDate = date.toLocaleDateString('de-DE', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                // Hauptperson als Zeile
+                const mainRow = [
+                    rowIndex++,
+                    escapeCSV(reg.name),
+                    escapeCSV(reg.email),
+                    escapeCSV(reg.notes || ''),
+                    formattedDate
+                ];
+                csvContent += mainRow.join(';') + '\n';
+                
+                // Partner als separate Zeile, falls vorhanden
+                if (reg.partnerName) {
+                    const partnerRow = [
+                        rowIndex++,
+                        escapeCSV(reg.partnerName),
+                        escapeCSV(reg.partnerEmail || reg.email),
+                        escapeCSV(`Partner/in von ${reg.name}`),
+                        formattedDate
+                    ];
+                    csvContent += partnerRow.join(';') + '\n';
+                }
+            });
+            
+            // CSV-Datei herunterladen
+            const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
-            link.href = url;
-            link.download = 'geburtstags-registrierungen.json';
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `geburtstags-registrierungen-${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            URL.revokeObjectURL(url);
+        }
+        
+        function escapeCSV(text) {
+            if (text === null || text === undefined) {
+                return '';
+            }
+            const string = String(text);
+            // Wenn das Feld Komma, Semikolon, Anführungszeichen oder Zeilenumbruch enthält, in Anführungszeichen setzen
+            if (string.includes(';') || string.includes('"') || string.includes('\n') || string.includes(',')) {
+                return '"' + string.replace(/"/g, '""') + '"';
+            }
+            return string;
         }
 
         function downloadCalendar() {
@@ -2223,6 +2472,7 @@
             const dresscodeModal = document.getElementById('dresscodeModal');
             const successModal = document.getElementById('successModal');
             const dresscodeGalleryModal = document.getElementById('dresscodeGalleryModal');
+            const exportTableModal = document.getElementById('exportTableModal');
             
             if (event.target === passwordModal) {
                 closePasswordModal();
@@ -2236,6 +2486,9 @@
             if (event.target === dresscodeGalleryModal) {
                 closeDresscodeGallery();
             }
+            if (event.target === exportTableModal) {
+                closeExportTableModal();
+            }
         });
 
         // Enter-Taste für Passwort-Eingabe und Dresscode-Bestätigung
@@ -2244,6 +2497,7 @@
             const dresscodeModal = document.getElementById('dresscodeModal');
             const successModal = document.getElementById('successModal');
             const dresscodeGalleryModal = document.getElementById('dresscodeGalleryModal');
+            const exportTableModal = document.getElementById('exportTableModal');
             
             if (passwordModal.style.display === 'flex' && event.key === 'Enter') {
                 checkPasswordAndExport();
@@ -2262,6 +2516,10 @@
             
             if (dresscodeGalleryModal.style.display === 'flex' && event.key === 'Escape') {
                 closeDresscodeGallery();
+            }
+            
+            if (exportTableModal.style.display === 'flex' && event.key === 'Escape') {
+                closeExportTableModal();
             }
         });
 
