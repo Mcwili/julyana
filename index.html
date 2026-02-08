@@ -1526,7 +1526,7 @@
                     <p id="location">Althardstrasse 170<br>8105 Regensdorf</p>
                     <p style="margin-top: 15px; font-size: 0.85rem; opacity: 0.6;" data-i18n="details.noCar">Bitte ohne Auto kommen</p>
                 </div>
-                <div class="detail-card">
+                <div class="detail-card" onclick="downloadCalendar()" style="cursor: pointer;">
                     <div class="icon">○</div>
                     <h4 data-i18n="details.when">Wann</h4>
                     <p id="time" data-i18n="details.dateTime">14. März 2026<br>19:00 Uhr<br><br>Anmeldung bitte bis 22. Februar 2026</p>
@@ -2206,6 +2206,15 @@
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
+        }
+
+        function downloadCalendar() {
+            const link = document.createElement('a');
+            link.href = 'julyana-geburtstag.ics';
+            link.download = 'julyana-geburtstag.ics';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         // Modal schließen bei Klick außerhalb

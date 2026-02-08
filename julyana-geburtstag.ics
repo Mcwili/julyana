@@ -1,0 +1,22 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Julyana Geburtstag//DE
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:julyana-geburtstag-40plus1@julyana.com
+DTSTAMP:20260208T000000Z
+DTSTART;TZID=Europe/Zurich:20260314T190000
+DTEND;TZID=Europe/Zurich:20260315T040000
+SUMMARY:Julyana, Geburtstag 40+1
+DESCRIPTION:Zum Geburtstag von Julyana\n\nAlthardstrasse 170\n8105 Regensdorf\n\nFür Essen und Trinken ist gesorgt.\nEs soll ein geselliges Zusammensein unter Freunden sein.\n\nDie Einladung gilt ohne Kinder. Erst ab 18 Jahren.\n\nAnmeldung bitte bis 22. Februar 2026.
+LOCATION:Althardstrasse 170, 8105 Regensdorf
+STATUS:CONFIRMED
+SEQUENCE:0
+BEGIN:VALARM
+TRIGGER:-PT24H
+ACTION:DISPLAY
+DESCRIPTION:Erinnerung: Julyana, Geburtstag 40+1 morgen um 19:00 Uhr
+END:VALARM
+END:VEVENT
+END:VCALENDAR
