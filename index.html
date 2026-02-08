@@ -988,6 +988,10 @@
                 top: 0;
             }
             
+            .hero-image {
+                object-position: center center;
+            }
+            
             .hero-overlay {
                 background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 30%, rgba(0,0,0,0.9) 60%, rgba(0,0,0,0.95) 100%);
             }
@@ -1239,6 +1243,14 @@
         
         /* Extra kleine Bildschirme */
         @media (max-width: 480px) {
+            .hero-image {
+                object-position: center center;
+            }
+            
+            .hero-image-wrapper {
+                height: 45%;
+            }
+            
             .hero h1 {
                 font-size: 1.8rem;
             }
