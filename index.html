@@ -2093,19 +2093,66 @@
             window.registrationDataUrl = url;
         }
 
-        function isDuplicate(email, partnerEmail) {
+        async function isDuplicate(email, partnerEmail) {
+            // Prüfe zuerst localStorage
             const registrations = getRegistrations();
-            return registrations.some(reg => 
+            const isLocalDuplicate = registrations.some(reg => 
                 reg.email.toLowerCase() === email.toLowerCase() ||
                 (partnerEmail && reg.partnerEmail && reg.partnerEmail.toLowerCase() === partnerEmail.toLowerCase()) ||
                 (reg.partnerEmail && reg.partnerEmail.toLowerCase() === email.toLowerCase())
             );
+            
+            if (isLocalDuplicate) {
+                return true;
+            }
+            
+            // Prüfe dann GitHub CSV
+            if (!GITHUB_CONFIG.token || GITHUB_CONFIG.token.trim() === '') {
+                return false; // Wenn kein Token vorhanden, nur localStorage prüfen
+            }
+            
+            try {
+                const csvUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.csvPath}`;
+                const response = await fetch(csvUrl, {
+                    headers: {
+                        'Authorization': `token ${GITHUB_CONFIG.token}`,
+                        'Accept': 'application/vnd.github.v3.raw'
+                    }
+                });
+                
+                if (!response.ok) {
+                    return false; // Wenn CSV nicht existiert oder nicht abrufbar, behandle als nicht-dupliziert
+                }
+                
+                const csvContent = await response.text();
+                const lines = csvContent.split('\n').filter(line => line.trim());
+                
+                // Überspringe Header-Zeile
+                for (let i = 1; i < lines.length; i++) {
+                    const columns = lines[i].split(',');
+                    if (columns.length >= 2) {
+                        const csvEmail = columns[1].trim().toLowerCase();
+                        const csvPartnerEmail = columns.length >= 4 ? columns[3].trim().toLowerCase() : '';
+                        
+                        if (csvEmail === email.toLowerCase() ||
+                            (partnerEmail && csvPartnerEmail && csvPartnerEmail === partnerEmail.toLowerCase()) ||
+                            (csvPartnerEmail && csvPartnerEmail === email.toLowerCase())) {
+                            return true;
+                        }
+                    }
+                }
+                
+                return false;
+            } catch (error) {
+                console.error('Fehler beim Prüfen der GitHub CSV:', error);
+                return false; // Bei Fehler, behandle als nicht-dupliziert
+            }
         }
 
         // Temporäre Speicherung der Formulardaten
         let pendingRegistration = null;
 
-        function registerGuest(event) {
+        async function registerGuest(event) {
             event.preventDefault();
             
             const form = event.target;
@@ -2130,7 +2177,7 @@
             }
 
             // Doppelregistrierung prüfen
-            if (isDuplicate(email, partnerEmail)) {
+            if (await isDuplicate(email, partnerEmail)) {
                 showMessage(lang.messages.duplicateEmail, 'error');
                 return;
             }
@@ -2180,6 +2227,9 @@
                     confirmBtn.disabled = !this.checked;
                 });
             }
+
+            // Migration der alten Registrierungen von localStorage zu GitHub CSV
+            migrateOldRegistrationsToGitHub();
         });
 
         // EmailJS Konfiguration
@@ -2319,6 +2369,119 @@
             } catch (error) {
                 console.error('Fehler beim Speichern auf GitHub:', error);
                 // Fehler wird ignoriert, damit die Registrierung trotzdem funktioniert
+            }
+        }
+
+        async function migrateOldRegistrationsToGitHub() {
+            // Prüfe, ob Migration bereits durchgeführt wurde
+            if (localStorage.getItem('registrationsMigratedToGitHub') === 'true') {
+                return;
+            }
+
+            // Prüfe, ob Token vorhanden ist
+            if (!GITHUB_CONFIG.token || GITHUB_CONFIG.token.trim() === '') {
+                return;
+            }
+
+            try {
+                const registrations = getRegistrations();
+                if (registrations.length === 0) {
+                    localStorage.setItem('registrationsMigratedToGitHub', 'true');
+                    return;
+                }
+
+                // Lese aktuelle CSV von GitHub
+                const csvUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.csvPath}`;
+                let csvContent = '';
+                let sha = null;
+
+                try {
+                    const response = await fetch(csvUrl, {
+                        headers: {
+                            'Authorization': `token ${GITHUB_CONFIG.token}`,
+                            'Accept': 'application/vnd.github.v3.raw'
+                        }
+                    });
+
+                    if (response.ok) {
+                        csvContent = await response.text();
+                        // Hole SHA für Update
+                        const metaResponse = await fetch(csvUrl, {
+                            headers: {
+                                'Authorization': `token ${GITHUB_CONFIG.token}`,
+                                'Accept': 'application/vnd.github.v3+json'
+                            }
+                        });
+                        if (metaResponse.ok) {
+                            const meta = await metaResponse.json();
+                            sha = meta.sha;
+                        }
+                    }
+                } catch (error) {
+                    // CSV existiert noch nicht, wird neu erstellt
+                    csvContent = 'Name,Email,Partner Name,Partner Email,Notes\n';
+                }
+
+                // Füge neue Registrierungen hinzu (nur wenn nicht bereits vorhanden)
+                const existingEmails = new Set();
+                const lines = csvContent.split('\n').filter(line => line.trim());
+                
+                // Sammle bestehende E-Mails
+                for (let i = 1; i < lines.length; i++) {
+                    const columns = lines[i].split(',');
+                    if (columns.length >= 2) {
+                        existingEmails.add(columns[1].trim().toLowerCase());
+                        if (columns.length >= 4 && columns[3].trim()) {
+                            existingEmails.add(columns[3].trim().toLowerCase());
+                        }
+                    }
+                }
+
+                let newEntries = '';
+                for (const reg of registrations) {
+                    const emailLower = reg.email.toLowerCase();
+                    const partnerEmailLower = reg.partnerEmail ? reg.partnerEmail.toLowerCase() : '';
+                    
+                    // Prüfe, ob bereits in CSV vorhanden
+                    if (!existingEmails.has(emailLower) && (!partnerEmailLower || !existingEmails.has(partnerEmailLower))) {
+                        const escapedName = reg.name.replace(/"/g, '""');
+                        const escapedEmail = reg.email.replace(/"/g, '""');
+                        const escapedPartnerName = reg.partnerName ? reg.partnerName.replace(/"/g, '""') : '';
+                        const escapedPartnerEmail = reg.partnerEmail ? reg.partnerEmail.replace(/"/g, '""') : '';
+                        const escapedNotes = reg.notes ? reg.notes.replace(/"/g, '""') : '';
+                        
+                        newEntries += `"${escapedName}","${escapedEmail}","${escapedPartnerName}","${escapedPartnerEmail}","${escapedNotes}"\n`;
+                    }
+                }
+
+                if (newEntries) {
+                    const updatedContent = csvContent + newEntries;
+                    const content = btoa(unescape(encodeURIComponent(updatedContent)));
+
+                    const updateUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.csvPath}`;
+                    const updateResponse = await fetch(updateUrl, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `token ${GITHUB_CONFIG.token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: 'Migration: Alte Registrierungen von localStorage zu CSV',
+                            content: content,
+                            sha: sha
+                        })
+                    });
+
+                    if (updateResponse.ok) {
+                        localStorage.setItem('registrationsMigratedToGitHub', 'true');
+                    }
+                } else {
+                    // Keine neuen Einträge, markiere Migration als abgeschlossen
+                    localStorage.setItem('registrationsMigratedToGitHub', 'true');
+                }
+            } catch (error) {
+                console.error('Fehler bei der Migration:', error);
+                // Migration wird beim nächsten Laden erneut versucht
             }
         }
 
