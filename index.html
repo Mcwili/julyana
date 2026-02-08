@@ -392,6 +392,17 @@
             font-weight: 300;
         }
 
+        .countdown-note {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.75rem;
+            color: #FFF6E6;
+            opacity: 0.5;
+            font-weight: 300;
+            letter-spacing: 1px;
+            font-style: italic;
+        }
+
         /* Details Section */
         .details {
             background: #000;
@@ -642,6 +653,18 @@
         .submit-button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+
+        .registration-note {
+            max-width: 600px;
+            margin: 40px auto 0;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #FFF6E6;
+            opacity: 0.7;
+            font-weight: 300;
+            line-height: 1.8;
+            letter-spacing: 0.5px;
         }
 
         .message {
@@ -1143,6 +1166,11 @@
                 letter-spacing: 1.5px;
             }
             
+            .countdown-note {
+                font-size: 0.7rem;
+                margin-top: 30px;
+            }
+            
             /* Details Mobile */
             .details {
                 padding: 50px 20px;
@@ -1224,6 +1252,12 @@
                 padding: 14px 30px;
                 font-size: 0.85rem;
                 letter-spacing: 2px;
+            }
+            
+            .registration-note {
+                font-size: 0.85rem;
+                margin-top: 30px;
+                padding: 0 10px;
             }
             
             .export-button {
@@ -1479,6 +1513,7 @@
                     <span class="countdown-label" data-i18n="countdown.seconds">Sekunden</span>
                 </div>
             </div>
+            <p class="countdown-note" data-i18n="countdown.registrationNote">Bitte bis zum 22. Februar 2026 anmelden.</p>
         </div>
 
         <!-- Details -->
@@ -1494,7 +1529,7 @@
                 <div class="detail-card">
                     <div class="icon">○</div>
                     <h4 data-i18n="details.when">Wann</h4>
-                    <p id="time" data-i18n="details.dateTime">14. März 2026<br>19:00 Uhr</p>
+                    <p id="time" data-i18n="details.dateTime">14. März 2026<br>19:00 Uhr<br><br>Anmeldung bitte bis 22. Februar 2026</p>
                 </div>
                 <div class="detail-card">
                     <div class="icon">○</div>
@@ -1542,6 +1577,8 @@
                 
                 <button type="submit" class="submit-button" data-i18n="registration.submit">Anmelden</button>
             </form>
+            
+            <p class="registration-note" data-i18n="registration.note">Bitte melde dich bis am 22. Februar 2026 an. So können wir das Fest gut vorbereiten und wissen, wer kommt. Besten Dank. Wir freuen uns auf ein schönes Fest mit schönen Styles.</p>
             
             <!-- Admin-Bereich für Export (unauffällig) -->
             <div style="text-align: center; margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(212, 175, 55, 0.05);">
@@ -1644,7 +1681,8 @@
                     days: 'Tage',
                     hours: 'Stunden',
                     minutes: 'Minuten',
-                    seconds: 'Sekunden'
+                    seconds: 'Sekunden',
+                    registrationNote: 'Bitte bis zum 22. Februar 2026 anmelden.'
                 },
                 details: {
                     title: 'Feier Details',
@@ -1653,7 +1691,7 @@
                     what: 'Was',
                     dresscode: 'Dresscode',
                     noCar: 'Bitte ohne Auto kommen',
-                    dateTime: '14. März 2026<br>19:00 Uhr',
+                    dateTime: '14. März 2026<br>19:00 Uhr<br><br>Anmeldung bitte bis 22. Februar 2026',
                     food: 'Für Essen und Trinken ist gesorgt.<br><br>Es soll ein geselliges Zusammensein unter Freunden sein.<br><br>Die Einladung gilt ohne Kinder. Erst ab 18 Jahren.',
                     dresscodeText: 'Kein Kostüm, keine Verkleidung.<br><br>Ein echter Stil, der aber nicht deiner ist.<br>So würdest du dich nie anziehen.<br>Elegant und festlich.<br>Bewusst außerhalb deiner Komfortzone.'
                 },
@@ -1670,7 +1708,8 @@
                     notes: 'Anmerkungen',
                     notesPlaceholder: 'Allergien, Wünsche, etc. (optional)',
                     optional: 'Optional',
-                    submit: 'Anmelden'
+                    submit: 'Anmelden',
+                    note: 'Bitte melde dich bis am 22. Februar 2026 an. So können wir das Fest gut vorbereiten und wissen, wer kommt. Besten Dank. Wir freuen uns auf ein schönes Fest mit schönen Styles.'
                 },
                 modal: {
                     password: {
@@ -1718,7 +1757,8 @@
                     days: 'Dias',
                     hours: 'Horas',
                     minutes: 'Minutos',
-                    seconds: 'Segundos'
+                    seconds: 'Segundos',
+                    registrationNote: 'Por favor, inscreva-se até 22 de fevereiro de 2026.'
                 },
                 details: {
                     title: 'Detalhes da Festa',
@@ -1727,7 +1767,7 @@
                     what: 'O que',
                     dresscode: 'Dress Code',
                     noCar: 'Por favor, venha sem carro',
-                    dateTime: '14 de março de 2026<br>19:00',
+                    dateTime: '14 de março de 2026<br>19:00<br><br>Inscrição até 22 de fevereiro de 2026',
                     food: 'Comida e bebida estão garantidas.<br><br>Será um encontro social entre amigos.<br><br>O convite é sem crianças. Apenas a partir de 18 anos.',
                     dresscodeText: 'Sem fantasia, sem disfarce.<br><br>Um estilo real, mas que não é seu.<br>Você nunca se vestiria assim.<br>Elegante e festivo.<br>Conscientemente fora da sua zona de conforto.'
                 },
@@ -1744,7 +1784,8 @@
                     notes: 'Observações',
                     notesPlaceholder: 'Alergias, desejos, etc. (opcional)',
                     optional: 'Opcional',
-                    submit: 'Inscrever'
+                    submit: 'Inscrever',
+                    note: 'Por favor, inscreva-se até 22 de fevereiro de 2026. Assim podemos preparar bem a festa e saber quem vem. Muito obrigado. Estamos ansiosos por uma bela festa com belos estilos.'
                 },
                 modal: {
                     password: {
