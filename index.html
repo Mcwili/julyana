@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600&family=Lato:wght@300;400&family=Great+Vibes&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -2181,7 +2182,147 @@
             }
         });
 
-        function confirmDresscodeAndRegister() {
+        // EmailJS Konfiguration
+        const EMAILJS_CONFIG = {
+            publicKey: '65aBMiFzCA4fVF3PJ',
+            serviceId: 'service_qvrjcmc',
+            templateId: 'template_ulinmzc'
+        };
+
+        // EmailJS initialisieren
+        if (typeof emailjs !== 'undefined') {
+            emailjs.init(EMAILJS_CONFIG.publicKey);
+        }
+
+        // E-Mail-Benachrichtigung senden
+        async function sendRegistrationEmail(registration) {
+            try {
+                const templateParams = {
+                    name: registration.name,
+                    email: registration.email,
+                    partnerName: registration.partnerName || 'Keine',
+                    partnerEmail: registration.partnerEmail || 'Keine',
+                    notes: registration.notes || 'Keine',
+                    registeredAt: new Date(registration.registeredAt).toLocaleString('de-DE')
+                };
+
+                await emailjs.send(
+                    EMAILJS_CONFIG.serviceId,
+                    EMAILJS_CONFIG.templateId,
+                    templateParams
+                );
+                
+                console.log('E-Mail erfolgreich an julyana@wili.ch gesendet');
+            } catch (error) {
+                console.error('Fehler beim Senden der E-Mail:', error);
+                // Fehler wird ignoriert, damit die Registrierung trotzdem funktioniert
+            }
+        }
+
+        // GitHub CSV-Speicherung
+        // HINWEIS: Token muss manuell nach dem Klonen hinzugefügt werden
+        // Siehe GITHUB-TOKEN-SETUP.md für Anleitung
+        const GITHUB_CONFIG = {
+            owner: 'Mcwili',
+            repo: 'julyana',
+            path: 'registrierungen.csv',
+            branch: 'main',
+            token: '' // Token hier eintragen (siehe GITHUB-TOKEN-SETUP.md)
+        };
+
+        async function saveToGitHubCSV(registration) {
+            // Prüfen ob Token vorhanden ist
+            if (!GITHUB_CONFIG.token || GITHUB_CONFIG.token.trim() === '') {
+                console.warn('GitHub Token nicht konfiguriert. CSV wird nicht auf GitHub gespeichert.');
+                return;
+            }
+
+            try {
+                // Aktuelle CSV-Datei von GitHub lesen
+                const getResponse = await fetch(
+                    `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}`,
+                    {
+                        headers: {
+                            'Authorization': `token ${GITHUB_CONFIG.token}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    }
+                );
+
+                let currentContent = '';
+                let sha = null;
+
+                if (getResponse.ok) {
+                    const fileData = await getResponse.json();
+                    currentContent = atob(fileData.content.replace(/\s/g, ''));
+                    sha = fileData.sha;
+                } else if (getResponse.status === 404) {
+                    // Datei existiert noch nicht, wird neu erstellt
+                    currentContent = '#;Name;E-Mail;Anmerkungen;Registriert am;Partner Name;Partner E-Mail\n';
+                } else {
+                    throw new Error('Fehler beim Lesen der CSV-Datei');
+                }
+
+                // Zeilen zählen für Nummerierung
+                const lines = currentContent.split('\n').filter(line => line.trim() && !line.startsWith('#'));
+                let rowNumber = lines.length + 1;
+
+                const date = new Date(registration.registeredAt || new Date());
+                const formattedDate = date.toLocaleDateString('de-DE', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                // Neue Zeilen hinzufügen
+                let newLines = '';
+                
+                // Hauptperson
+                newLines += `${rowNumber++};${escapeCSV(registration.name)};${escapeCSV(registration.email)};${escapeCSV(registration.notes || '')};${formattedDate};${escapeCSV(registration.partnerName || '')};${escapeCSV(registration.partnerEmail || '')}\n`;
+                
+                // Partner, falls vorhanden
+                if (registration.partnerName) {
+                    newLines += `${rowNumber++};${escapeCSV(registration.partnerName)};${escapeCSV(registration.partnerEmail || registration.email)};${escapeCSV(`Partner/in von ${registration.name}`)};${formattedDate};;\n`;
+                }
+
+                // Neue Datei-Inhalte
+                const newContent = currentContent + newLines;
+                const encodedContent = btoa(unescape(encodeURIComponent(newContent)));
+
+                // Datei auf GitHub aktualisieren
+                const updateResponse = await fetch(
+                    `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}`,
+                    {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `token ${GITHUB_CONFIG.token}`,
+                            'Accept': 'application/vnd.github.v3+json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: `Registrierung hinzugefügt: ${registration.name}`,
+                            content: encodedContent,
+                            branch: GITHUB_CONFIG.branch,
+                            sha: sha
+                        })
+                    }
+                );
+
+                if (updateResponse.ok) {
+                    console.log('CSV erfolgreich auf GitHub gespeichert');
+                } else {
+                    const error = await updateResponse.json();
+                    console.error('Fehler beim Speichern auf GitHub:', error);
+                }
+            } catch (error) {
+                console.error('Fehler beim Speichern auf GitHub:', error);
+                // Fehler wird ignoriert, damit die Registrierung trotzdem funktioniert
+            }
+        }
+
+        async function confirmDresscodeAndRegister() {
             if (!pendingRegistration) {
                 closeDresscodeModal();
                 return;
@@ -2198,9 +2339,16 @@
                 registeredAt: new Date().toISOString()
             };
 
+            // Lokal speichern (für Anzeige)
             const registrations = getRegistrations();
             registrations.push(registration);
             saveRegistrations(registrations);
+
+            // E-Mail-Benachrichtigung senden
+            sendRegistrationEmail(registration);
+
+            // CSV auf GitHub speichern
+            saveToGitHubCSV(registration);
 
             // Formular zurücksetzen
             pendingRegistration.form.reset();
@@ -2456,6 +2604,7 @@
             }
             return string;
         }
+
 
         function downloadCalendar() {
             const link = document.createElement('a');
